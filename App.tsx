@@ -1,68 +1,48 @@
-import React, {useState} from 'react';
-
-import {
-  View,
-  Text,
-  TextInput,
-  Button,
-  Alert,
-  Image,
-  StyleSheet,
-} from 'react-native';
+import React from 'react';
+import {View, Text, Image, StyleSheet, FlatList} from 'react-native';
 
 const App = () => {
-  const [text, setText] = useState('');
-
-  const validatePalindrome = () => {
-    const cleanedText = text.replace(/[^A-Za-z0-9]/g, '').toLowerCase();
-    const reversedText = cleanedText.split('').reverse().join('');
-    if (cleanedText === reversedText) {
-      Alert.alert('Success', 'The text is a palindrome');
-    } else {
-      Alert.alert('probabilitas', 'tulisan ini bukan palindrome');
-    }
-  };
+  const products = [
+    {id: 1, name: 'Sepatu Sneakers Pria Hitam', price: 'Rp 250.000'},
+    {id: 2, name: 'Sepatu Sneakers Pria Hitam', price: 'Rp 250.000'},
+    {id: 3, name: 'Sepatu Sneakers Pria Hitam', price: 'Rp 250.000'},
+    {id: 4, name: 'Sepatu Sneakers Pria Hitam', price: 'Rp 250.000'},
+    {id: 5, name: 'Sepatu Sneakers Pria Hitam', price: 'Rp 250.000'},
+    {id: 6, name: 'Sepatu Sneakers Pria Hitam', price: 'Rp 280.000'},
+    {id: 7, name: 'Sepatu Sneakers Pria Hitam', price: 'Rp 280.000'},
+  ];
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Palindrome Validator</Text>
-      <Image
-        source={{
-          uri: 'https://images.tokopedia.net/img/cache/700/VqbcmM/2023/4/15/53d5ca54-de76-4005-91c0-9a3f3ffef2fb.jpg',
-        }} // Ganti URL gambar sesuai kebutuhan
-        style={styles.image}
-      />
-      <TextInput
-        value={text}
-        onChangeText={setText}
-        placeholder="Enter text"
-        style={styles.input}
-      />
-      <Button title="Validate" onPress={validatePalindrome} />
-    </View>
+    <FlatList
+      data={products}
+      renderItem={({item}) => (
+        <View style={styles.itemContainer}>
+          <Image
+            source={{
+              uri: 'https://images.tokopedia.net/img/cache/700/VqbcmM/2022/1/16/1abf9771-e4c9-47c8-b77a-95a05fc4bb34.jpg',
+            }}
+            style={styles.image}
+          />
+          <Text>{item.name}</Text>
+          <Text>{item.price}</Text>
+        </View>
+      )}
+      keyExtractor={item => item.id.toString()}
+      numColumns={3}
+    />
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 20,
+  itemContainer: {
+    flex: 1,
+    margin: 10,
+    justifyContent: 'center',
     alignItems: 'center',
   },
   image: {
-    width: 200,
-    height: 200,
-    marginBottom: 20,
-  },
-  header: {
-    fontSize: 24,
-    marginBottom: 20,
-  },
-  input: {
-    borderColor: 'green',
-    borderWidth: 1,
-    marginBottom: 20,
-    padding: 10,
-    width: '100%',
+    width: 100,
+    height: 100,
   },
 });
 
