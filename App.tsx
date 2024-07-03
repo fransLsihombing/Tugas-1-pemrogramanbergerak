@@ -1,95 +1,68 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
+
 import {
-  SafeAreaView,
-  ScrollView,
   View,
   Text,
   TextInput,
-  Image,
   Button,
-  FlatList,
-  StyleSheet
+  Alert,
+  Image,
+  StyleSheet,
 } from 'react-native';
 
 const App = () => {
-  const [inputText, setInputText] = useState('');
-  const [items, setItems] = useState([
-    { key: '1', name: 'CRF 153L' },
-    { key: '2', name: 'Scoopy' },
-    { key: '3', name: 'ADV 167' },
-    { key: '4', name: 'GTR 150' },
-    { key: '5', name: 'CB180R Streetwater' },
-  ]);
+  const [text, setText] = useState('');
 
-  const handleButtonPress = () => {
-    if (inputText.trim() !== '') {
-      setItems([...items, { key: `${items.length + 1}`, name: inputText }]);
-      setInputText('');
+  const validatePalindrome = () => {
+    const cleanedText = text.replace(/[^A-Za-z0-9]/g, '').toLowerCase();
+    const reversedText = cleanedText.split('').reverse().join('');
+    if (cleanedText === reversedText) {
+      Alert.alert('Success', 'The text is a palindrome');
+    } else {
+      Alert.alert('SELAMAT KAMU BERUNTUNG!', 'Anda Mendapatkan Minuman Yakult Gratis ');
     }
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView>
-        <View style={styles.viewContainer}>
-          <Text style={styles.title}>Aplikasi Sederhana Motor</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Masukkan teks"
-            value={inputText}
-            onChangeText={setInputText}
-          />
-          <Button title="Tambah Item" onPress={handleButtonPress} />
-          <Image
-            style={styles.image}
-            source={{ uri: 'https://akcdn.detik.net.id/visual/2021/03/18/honda-cb650r-2022_169.jpeg?w=650' }}
-            resizeMode="contain"
-          />
-          <FlatList
-            data={items}
-            renderItem={({ item }) => (
-              <Text style={styles.item}>{item.name}</Text>
-            )}
-            keyExtractor={item => item.key}
-          />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <View style={styles.container}>
+      <Text style={styles.header}>Palindrome Validator</Text>
+      <Image
+        source={{
+          uri: 'https://images.tokopedia.net/img/cache/700/VqbcmM/2023/4/15/53d5ca54-de76-4005-91c0-9a3f3ffef2fb.jpg',
+        }} // Ganti URL gambar sesuai kebutuhan
+        style={styles.image}
+      />
+      <TextInput
+        value={text}
+        onChangeText={setText}
+        placeholder="Enter text"
+        style={styles.input}
+      />
+      <Button title="Validate" onPress={validatePalindrome} />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#f8f8f8',
-  },
-  viewContainer: {
     padding: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'center',
-  },
-  input: {
-    height: 40,
-    borderColor: '#000',
-    borderWidth: 1,
-    marginBottom: 10,
-    paddingHorizontal: 10,
+    alignItems: 'center',
   },
   image: {
     width: 200,
     height: 200,
-    marginVertical: 20,
-    alignSelf: 'center',
+    marginBottom: 20,
   },
-  item: {
+  header: {
+    fontSize: 24,
+    marginBottom: 20,
+  },
+  input: {
+    borderColor: 'green',
+    borderWidth: 1,
+    marginBottom: 20,
     padding: 10,
-    fontSize: 18,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    width: '100%',
   },
 });
 
