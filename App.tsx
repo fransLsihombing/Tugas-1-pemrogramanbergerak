@@ -1,48 +1,95 @@
-import React from 'react';
-import {View, Text, Image, StyleSheet, FlatList} from 'react-native';
+import React, { useState } from 'react';
+import {
+  SafeAreaView,
+  ScrollView,
+  View,
+  Text,
+  TextInput,
+  Image,
+  Button,
+  FlatList,
+  StyleSheet
+} from 'react-native';
 
 const App = () => {
-  const products = [
-    {id: 1, name: 'Sepatu Sneakers Pria Hitam', price: 'Rp 250.000'},
-    {id: 2, name: 'Sepatu Sneakers Pria Hitam', price: 'Rp 250.000'},
-    {id: 3, name: 'Sepatu Sneakers Pria Hitam', price: 'Rp 250.000'},
-    {id: 4, name: 'Sepatu Sneakers Pria Hitam', price: 'Rp 250.000'},
-    {id: 5, name: 'Sepatu Sneakers Pria Hitam', price: 'Rp 250.000'},
-    {id: 6, name: 'Sepatu Sneakers Pria Hitam', price: 'Rp 280.000'},
-    {id: 7, name: 'Sepatu Sneakers Pria Hitam', price: 'Rp 280.000'},
-  ];
+  const [inputText, setInputText] = useState('');
+  const [items, setItems] = useState([
+    { key: '1', name: 'CRF 153L' },
+    { key: '2', name: 'Scoopy' },
+    { key: '3', name: 'ADV 167' },
+    { key: '4', name: 'GTR 150' },
+    { key: '5', name: 'CB180R Streetwater' },
+  ]);
+
+  const handleButtonPress = () => {
+    if (inputText.trim() !== '') {
+      setItems([...items, { key: `${items.length + 1}`, name: inputText }]);
+      setInputText('');
+    }
+  };
 
   return (
-    <FlatList
-      data={products}
-      renderItem={({item}) => (
-        <View style={styles.itemContainer}>
-          <Image
-            source={{
-              uri: 'https://images.tokopedia.net/img/cache/700/VqbcmM/2022/1/16/1abf9771-e4c9-47c8-b77a-95a05fc4bb34.jpg',
-            }}
-            style={styles.image}
+    <SafeAreaView style={styles.container}>
+      <ScrollView>
+        <View style={styles.viewContainer}>
+          <Text style={styles.title}>Aplikasi Sederhana Motor</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Masukkan teks"
+            value={inputText}
+            onChangeText={setInputText}
           />
-          <Text>{item.name}</Text>
-          <Text>{item.price}</Text>
+          <Button title="Tambah Item" onPress={handleButtonPress} />
+          <Image
+            style={styles.image}
+            source={{ uri: 'https://akcdn.detik.net.id/visual/2021/03/18/honda-cb650r-2022_169.jpeg?w=650' }}
+            resizeMode="contain"
+          />
+          <FlatList
+            data={items}
+            renderItem={({ item }) => (
+              <Text style={styles.item}>{item.name}</Text>
+            )}
+            keyExtractor={item => item.key}
+          />
         </View>
-      )}
-      keyExtractor={item => item.id.toString()}
-      numColumns={3}
-    />
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  itemContainer: {
+  container: {
     flex: 1,
-    margin: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: '#f8f8f8',
+  },
+  viewContainer: {
+    padding: 20,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  input: {
+    height: 40,
+    borderColor: '#000',
+    borderWidth: 1,
+    marginBottom: 10,
+    paddingHorizontal: 10,
   },
   image: {
-    width: 100,
-    height: 100,
+    width: 200,
+    height: 200,
+    marginVertical: 20,
+    alignSelf: 'center',
+  },
+  item: {
+    padding: 10,
+    fontSize: 18,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
   },
 });
 
